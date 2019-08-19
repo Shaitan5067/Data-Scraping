@@ -14,8 +14,15 @@ url1=[]
 url2=[]
 url3=[]
 url4=[]
+url5=[]
 linked=[]
 linked1=[]
+linked2=[]
+linked3=[]
+linked4=[]
+duration=[]
+best_time=[]
+airport=[]
 driver = webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
 driver.get(url)
 driver.implicitly_wait(10)
@@ -47,4 +54,83 @@ url3=list(set(url2))
 
 #### At the last after completing  the whole thing we quit the selenium tool by using quit command ####
 
+driver.quit()
+
+
+
+
+
+####### Now from that yrl we have to use only that url which contains places-to-visit in that #####
+
+
+driver=webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
+for i in url3:
+    driver.get(i)
+    driver.implicitly_wait(10)
+    links1=driver.find_elements_by_tag_name('a')
+    for i in links1:
+        linked1.append(i.get_attribute('href'))
+for i in linked1:
+    if i is None:
+        pass
+    elif i.count('places-to-visit.html')==1:
+        if i not in url3:
+            url3.append(i)
+for i in url3:
+    if i[0:33]=="https://www.holidify.com/country/" and i[-1]!='#':
+        url4.append(i)
+
+
+####### So after getting all the deserved link we will append it in url5
+
+url5=list(set(url4))
+driver.quit()
+
+##### From given url5 now we will extract all the urls present in each of url5 #######
+
+driver=webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
+for i in url5:
+    driver.get(i)
+    driver.implicitly_wait(10)
+    links2=driver.find_elements_by_tag_name('a')
+    for i in links2:
+        linked2.append(i.get_attribute('href'))
+        
+        
+#### we will append all the url in linked3   ####
+
+
+linked3=list(set(linked2))
+driver.quit()  
+
+
+
+####   Now as we extracted all the urls present now we will clean the urls and store in the linked4 ###
+
+
+for i in linked3:
+    if i is None or i.count("sightseeing")==1 or i.count(".html")==1:
+        pass
+    elif i[0:32]=="https://www.holidify.com/places/":
+            linked4.append(i)
+
+
+#### Now We will go on every url present in linked4 with the help of selenium web driver and extract the info of Duration , Best_time and Nearest airport
+
+
+
+driver=webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
+
+for i in linked4:
+    driver.get(i)
+    driver.implicitly_wait(10)
+    links3=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[1]/p[2]")
+    links4=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[2]/p[1]")
+    links5=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[2]/p[2]")
+    for i in links3:
+        duration.append(i.text)
+    for j in links4:
+        best_time.append(j.text)
+    for k in links5:
+        airport.append(k.text)
 driver.quit()
