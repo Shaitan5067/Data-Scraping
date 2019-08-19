@@ -1,0 +1,50 @@
+####  In this we are first visiting the url("https://www.holidify.com/") with the help of selenium webdriver   #### 
+
+
+
+from selenium import webdriver
+from selenium.webdriver.common.keys import Keys
+from selenium.webdriver.support.ui import WebDriverWait
+import bs4
+import pandas as pd
+import re
+import os
+url="https://www.holidify.com/"
+url1=[]
+url2=[]
+url3=[]
+url4=[]
+linked=[]
+linked1=[]
+driver = webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
+driver.get(url)
+driver.implicitly_wait(10)
+links=driver.find_elements_by_tag_name('a')
+
+#####  Here we are finding the links present in that url with the help of attribute href #####
+for i in links:
+    linked.append(i.get_attribute('href'))
+
+ ##### after getting links we will clean the links because the link may contain hash tags and some whatsapp link and facebook link which we dont want so we will clean that #####
+
+
+for i in linked:
+    if i is None:
+        pass
+    elif i[:33]=='https://www.holidify.com/country/':
+        url1.append(i)
+    else:
+        pass
+for i in url1:
+    if i.count('places-to-visit.html')==1:
+        url2.append(i)
+    else:
+        url2.append(i+'places-to-visit.html')
+        
+##### we are using set data type to delete the repeated urls and make storing them in list url3
+url3=list(set(url2))
+
+
+#### At the last after completing  the whole thing we quit the selenium tool by using quit command ####
+
+driver.quit()
