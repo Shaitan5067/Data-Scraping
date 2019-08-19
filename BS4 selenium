@@ -23,6 +23,7 @@ linked4=[]
 duration=[]
 best_time=[]
 airport=[]
+city=[]
 driver = webdriver.Firefox(executable_path=r'C:\Temp\Anaconda\Lib\site-packages\selenium\webdriver\firefox\geckodriver.exe')
 driver.get(url)
 driver.implicitly_wait(10)
@@ -115,7 +116,7 @@ for i in linked3:
             linked4.append(i)
 
 
-#### Now We will go on every url present in linked4 with the help of selenium web driver and extract the info of Duration , Best_time and Nearest airport
+#### Now We will go on every url present in linked4 with the help of selenium web driver and extract the info of Duration , City Name, Best_time and Nearest airport
 
 
 
@@ -127,10 +128,13 @@ for i in linked4:
     links3=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[1]/p[2]")
     links4=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[2]/p[1]")
     links5=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[6]/div[2]/p[2]")
+    links7=driver.find_elements_by_xpath("/html/body/div[3]/div/div/div[3]/div[2]/div[1]/div[1]/h1")
     for i in links3:
         duration.append(i.text)
     for j in links4:
         best_time.append(j.text)
     for k in links5:
         airport.append(k.text)
+    for m in links7:
+        city.append(m.text)
 driver.quit()
